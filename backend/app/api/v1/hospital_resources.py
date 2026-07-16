@@ -1,6 +1,7 @@
 from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy.orm import Session
-from typing import List
+from typing import List, Optional
+from pydantic import BaseModel
 
 from app.db.database import get_db
 from app.api.deps import get_current_user
@@ -8,6 +9,11 @@ from app.models.domain import User, RoleEnum, Doctor as DoctorModel, Patient as 
 from app.schemas.domain import Doctor, Patient, PatientUpdate, ICUBed, ICUBedUpdate, OperatingRoom, OperatingRoomUpdate, Ambulance, Equipment, EquipmentUpdate, Department
 
 router = APIRouter()
+
+class EquipmentCreateIn(BaseModel):
+    name: str
+    status: str
+    current_location: Optional[str] = None
 
 def require_hospital_admin(current_user: User):
     if current_user.role not in [RoleEnum.super_admin, RoleEnum.hospital_admin]:
@@ -71,6 +77,27 @@ def get_equipment(db: Session = Depends(get_db), current_user: User = Depends(ge
     if user.role == RoleEnum.hospital_admin:
         query = query.filter(EquipmentModel.hospital_id == user.hospital_id)
     return query.all()
+
+@router.post("/equipment", response_model=Equipment, status_code=status.HTTP_201_CREATED)
+def create_equipment(
+    eq_in: EquipmentCreateIn,
+    db: Session = Depends(get_db),
+    current_user: User = Depends(get_current_user)
+):
+    user = require_hospital_admin(current_user)
+    hospital_id = user.hospital_id or 1
+    
+    db_eq = EquipmentModel(
+        name=eq_in.name,
+        status=eq_in.status,
+        current_location=eq_in.current_location,
+        hospital_id=hospital_id,
+        maintenance_date=None
+    )
+    db.add(db_eq)
+    db.commit()
+    db.refresh(db_eq)
+    return db_eq
 
 @router.put("/patients/{patient_id}", response_model=Patient)
 def update_patient(patient_id: int, patient_update: PatientUpdate, db: Session = Depends(get_db), current_user: User = Depends(get_current_user)):
