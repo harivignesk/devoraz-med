@@ -109,9 +109,6 @@ export function Ambulances() {
           <h2 className="text-2xl font-bold tracking-tight text-slate-800">Fleet Management</h2>
           <p className="text-slate-500">Track and dispatch emergency response vehicles.</p>
         </div>
-        <Button className="bg-blue-600 hover:bg-blue-700">
-          <Plus className="mr-2 h-4 w-4" /> Add Vehicle
-        </Button>
       </div>
 
       {isLoading ? (
@@ -194,12 +191,7 @@ export function Ambulances() {
               <div className="col-span-full text-center p-12 bg-white rounded-xl border border-slate-200 border-dashed">
                 <AmbulanceIcon className="mx-auto h-12 w-12 text-slate-300" />
                 <h3 className="mt-2 text-sm font-semibold text-slate-900">No ambulances</h3>
-                <p className="mt-1 text-sm text-slate-500">Add emergency vehicles to the fleet to track them here.</p>
-                <div className="mt-6">
-                  <Button className="bg-blue-600 hover:bg-blue-700">
-                    <Plus className="mr-2 h-4 w-4" /> Add Vehicle
-                  </Button>
-                </div>
+                <p className="mt-1 text-sm text-slate-500">No emergency vehicles are currently tracked in the fleet.</p>
               </div>
             )}
           </div>
