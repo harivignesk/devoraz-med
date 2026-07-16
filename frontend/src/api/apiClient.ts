@@ -14,6 +14,29 @@ apiClient.interceptors.request.use((config) => {
   if (token) {
     config.headers.Authorization = `Bearer ${token}`;
   }
+  
+  // Normalize endpoints to include trailing slash if they represent collection roots
+  if (config.url) {
+    const urlParts = config.url.split('?');
+    let path = urlParts[0];
+    const query = urlParts[1] ? `?${urlParts[1]}` : '';
+    
+    // Append trailing slash to root collection endpoints to avoid FastAPI 307 redirects
+    const endpointsToSlash = [
+      '/doctors',
+      '/patients',
+      '/nurses',
+      '/emergency',
+      '/hospitals'
+    ];
+    
+    if (endpointsToSlash.includes(path)) {
+      path += '/';
+    }
+    
+    config.url = path + query;
+  }
+  
   return config;
 });
 
