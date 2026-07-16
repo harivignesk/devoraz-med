@@ -6,8 +6,6 @@ MedSync AI is a smart hospital resource synchronization and emergency command ce
 > ### 🔑 Quick Access Demo Credentials
 > The frontend login is pre-filled for convenience, but you can log in with **any email and password** (mock authentication). For standard roles, use:
 > - **Super Admin**: `admin@medsync.com` / `admin123`
-> - **Hospital Admin**: `hadmin@medsync.com` / `hadmin123`
-
 
 ## 🛠️ Technology Stack
 - **Backend**: FastAPI (Python), SQLAlchemy ORM, SQLite Database, Alembic Migrations, Pydantic.
