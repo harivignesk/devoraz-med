@@ -87,7 +87,6 @@ The database is seeded with two admin accounts for testing and platform administ
 | Role | Username (Email) | Password |
 |---|---|---|
 | **Super Admin** | `admin@medsync.com` | `admin123` |
-| **Hospital Admin** | `hadmin@medsync.com` | `hadmin123` |
 
 *Note: The login form is prefilled with the Super Admin credentials by default during development for ease of use.*
 
