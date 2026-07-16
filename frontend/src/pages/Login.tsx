@@ -9,69 +9,28 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle, CardFooter }
 import { Activity } from 'lucide-react';
 
 export function Login() {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  const [email, setEmail] = useState('admin@medsync.com');
+  const [password, setPassword] = useState('admin123');
   const [error, setError] = useState('');
-  const [isLoading, setIsLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(false);
   const { login } = useAuth();
   const navigate = useNavigate();
-
-  // Auto-bypass login for development
-  useEffect(() => {
-    const autoLogin = async () => {
-      try {
-        const formData = new URLSearchParams();
-        formData.append('username', 'superadmin@medsync.ai');
-        formData.append('password', 'superpassword123');
-
-        const response = await axios.post('http://localhost:8000/api/v1/auth/login', formData, {
-          headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
-        });
-
-        const data = response.data;
-        login(data.access_token, {
-          user_id: data.user_id,
-          role: data.role,
-          hospital_id: data.hospital_id
-        });
-        
-        navigate('/dashboard');
-      } catch (err: any) {
-        console.error('Auto login failed, displaying normal login.', err);
-        setIsLoading(false);
-      }
-    };
-
-    autoLogin();
-  }, [login, navigate]);
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsLoading(true);
     setError('');
 
-    try {
-      const formData = new URLSearchParams();
-      formData.append('username', email);
-      formData.append('password', password);
-
-      const response = await axios.post('http://localhost:8000/api/v1/auth/login', formData, {
-        headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
+    // Simulated dummy login flow that does not require a running backend
+    setTimeout(() => {
+      login('dummy-token-12345', {
+        user_id: 1,
+        role: 'super_admin',
+        hospital_id: null
       });
-
-      const data = response.data;
-      login(data.access_token, {
-        user_id: data.user_id,
-        role: data.role,
-        hospital_id: data.hospital_id
-      });
-      
-      navigate('/dashboard');
-    } catch (err: any) {
-      setError(err.response?.data?.detail || 'Failed to login');
-    } finally {
       setIsLoading(false);
-    }
+      navigate('/dashboard');
+    }, 500);
   };
 
   return (

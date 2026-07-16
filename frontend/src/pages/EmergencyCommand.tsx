@@ -61,7 +61,8 @@ export function EmergencyCommand() {
     setFinalState(null);
     setCurrentNode('patient'); // Initial state
 
-    const eventSource = new EventSource(`http://localhost:8000/api/v1/workflow/stream/${patientId}`);
+    const baseUrl = import.meta.env.VITE_API_BASE_URL || 'http://localhost:8000/api/v1';
+    const eventSource = new EventSource(`${baseUrl}/workflow/stream/${patientId}`);
 
     eventSource.onmessage = (event) => {
       const data = JSON.parse(event.data);

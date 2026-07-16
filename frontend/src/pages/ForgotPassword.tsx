@@ -18,14 +18,11 @@ export function ForgotPassword() {
     setIsLoading(true);
     setError('');
 
-    try {
-      await axios.post('http://localhost:8000/api/v1/auth/forgot-password', { email });
+    // Simulated dummy forgot password flow
+    setTimeout(() => {
       setSuccess(true);
-    } catch (err: any) {
-      setError(err.response?.data?.detail || 'Something went wrong. Please try again.');
-    } finally {
       setIsLoading(false);
-    }
+    }, 500);
   };
 
   return (

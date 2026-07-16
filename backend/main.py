@@ -16,12 +16,13 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-from app.api.v1 import dashboard, hospitals, hospital_resources, doctors, nurses, patients, emergency, workflow_api
+from app.api.v1 import auth, dashboard, hospitals, hospital_resources, doctors, nurses, patients, emergency, workflow_api
 
 @app.get("/")
 def root():
     return {"message": "Welcome to MedSync AI API (LangGraph Edition)"}
 
+app.include_router(auth.router, prefix=f"{settings.API_V1_STR}/auth", tags=["Auth"])
 app.include_router(workflow_api.router, prefix=f"{settings.API_V1_STR}/workflow", tags=["Workflow"])
 app.include_router(dashboard.router, prefix=f"{settings.API_V1_STR}/dashboard", tags=["Dashboard"])
 app.include_router(hospitals.router, prefix=f"{settings.API_V1_STR}/hospitals", tags=["Hospitals"])

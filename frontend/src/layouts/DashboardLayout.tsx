@@ -1,14 +1,24 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Outlet, useNavigate, NavLink } from 'react-router-dom';
 import { Activity, LayoutDashboard, Users, Hospital, Stethoscope, Ambulance, Settings, LogOut } from 'lucide-react';
+import { useAuth } from '../context/AuthContext';
+
 export function DashboardLayout() {
+  const { user, logout, isAuthenticated } = useAuth();
   const navigate = useNavigate();
 
+  useEffect(() => {
+    if (!isAuthenticated) {
+      navigate('/login');
+    }
+  }, [isAuthenticated, navigate]);
+
   const handleLogout = () => {
+    logout();
     navigate('/login');
   };
 
-  const isSuperAdmin = true;
+  const isSuperAdmin = user?.role === 'super_admin';
 
   return (
     <div className="flex h-screen bg-slate-50 dark:bg-slate-900">
